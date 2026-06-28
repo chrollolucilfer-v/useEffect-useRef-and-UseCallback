@@ -1,122 +1,84 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import React, { useState, useCallback } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [length, setLength] = useState(8);
+  const [number, setNumber] = useState(false);
+  const [characters, setCharacters] = useState(true);
+  const [password, setPassword] = useState("");
+
+  const passwordGenerator = useCallback(() => {
+    let pass = ""; // will pass password
+    let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"; // data from which we will make our passsword from
+    if (number) str += "0123456789";
+    if (characters) str += "!@#$%^&*()+=-<>?}{:'<.,>/?";
+
+    for (let i = 1; i < length; i++) {
+      let char = Math.floor(Math.random() * str.length);
+      pass += str.charAt(char);
+    }
+    setPassword(pass);
+  }, [length, number, characters]);
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+      <h1 className="text-4xl text-center">Password Generator</h1>
+      <p>Learning Hooks, useEffects, useRef, and useCallbacks</p>
+      <div className="w-full max-w-md mx-auto shadow-md rounded-lg px-4 my-8   text-orange-500 bg-gray-800">
+       
+        <div className="flex shadow rounded-lg overflow-hidden border-none mb-4">
+          <input
+            type="text"
+            value={password}
+            placeholder="Password"
+            className="outline-none w-full py-1 px-3"
+            readOnly
+          />
+          <button className="outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0">
+            Copy
+          </button>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
 
-      <div className="ticks"></div>
+        <div className="flex text-sm gap-x-2">
+          <div className="flex items-center gap-x-1">
+            <input
+              type="range"
+              min={6}
+              max={100}
+              value={length}
+              className="cursor-pointer"
+              onChange={(e) => {
+                setLength(Number(e.target.value));
+              }}
+            />
+            <label>Length: {length}</label>
+          </div>
+          <div className="flex items-center gap-x-1">
+            <input
+              type="checkbox"
+              defaultChecked={number}
+              id="numberInput"
+              onChange={() => {
+                setNumber((prev) => !prev);
+              }}
+            />
+            <label htmlFor="numberInput">Numbers</label>
+          </div>
+          <div className="flex items-center gap-x-1">
+            <input
+              type="checkbox"
+              defaultChecked={characters}
+              id="characterInput"
+              onChange={() => {
+                setCharacters((prev) => !prev);
+              }}
+            />
+            <label htmlFor="characterInput">Characters</label>
+          </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
