@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 
 const App = () => {
   const [length, setLength] = useState(8);
@@ -12,12 +12,16 @@ const App = () => {
     if (number) str += "0123456789";
     if (characters) str += "!@#$%^&*()+=-<>?}{:'<.,>/?";
 
-    for (let i = 1; i < length; i++) {
+    for (let i = 0; i < length; i++) {
       let char = Math.floor(Math.random() * str.length);
       pass += str.charAt(char);
     }
     setPassword(pass);
   }, [length, number, characters]);
+
+  useEffect(() => {
+    passwordGenerator();
+}, [passwordGenerator]);
 
   return (
     <>
@@ -55,7 +59,7 @@ const App = () => {
           <div className="flex items-center gap-x-1">
             <input
               type="checkbox"
-              defaultChecked={number}
+              checked={number}
               id="numberInput"
               onChange={() => {
                 setNumber((prev) => !prev);
@@ -66,7 +70,7 @@ const App = () => {
           <div className="flex items-center gap-x-1">
             <input
               type="checkbox"
-              defaultChecked={characters}
+              checked={characters}
               id="characterInput"
               onChange={() => {
                 setCharacters((prev) => !prev);
@@ -82,3 +86,12 @@ const App = () => {
 };
 
 export default App;
+
+
+
+
+
+
+
+ 
+// callback & dependecies array
